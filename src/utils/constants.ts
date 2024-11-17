@@ -32,4 +32,5 @@ export const OPTION_NAMES = {
   'Option 28': '스물여덟번째 선택지',
   'Option 29': '스물아홉번째 선택지',
   'Option 30': '서른번째 선택지',
+  'Option 31': '서른한번째 선택지',
 }; 

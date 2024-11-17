@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,14 +23,21 @@ ChartJS.register(
 interface VoteChartProps {
   results: Record<string, number>;
   totalVotes: number;
+  onRefresh?: () => void;
 }
 
-export default function VoteChart({ results, totalVotes }: VoteChartProps) {
+export default function VoteChart({ results, totalVotes, onRefresh }: VoteChartProps) {
   const [isClient, setIsClient] = useState(false);
   
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    
+    const intervalId = setInterval(() => {
+      onRefresh?.();
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(intervalId);
+  }, [onRefresh]);
 
   if (!isClient) {
     return (
