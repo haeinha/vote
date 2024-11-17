@@ -19,3 +19,8 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.spacer {
+  height: 80px; /* or whatever height you need */
+}

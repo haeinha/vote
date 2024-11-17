@@ -7,16 +7,17 @@ export default function Home() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold text-gray-900">
-            Employee Voting System
+            24년도 성과 공유회 투표
           </h2>
           <p className="mt-2 text-lg text-gray-600">
-            Please submit your vote below
+            모두 고생하였지만, 가장 성과가 뛰어나다고 생각하는 팀에 투표해주세요
           </p>
         </div>
         
         <div className="bg-white shadow-xl rounded-2xl p-8">
           <VoteForm />
         </div>
+        <div style={{ height: '30px' }}></div>
 
         <div className="mt-8 text-center">
           <Link 
