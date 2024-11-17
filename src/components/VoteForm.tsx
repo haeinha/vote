@@ -51,7 +51,7 @@ export default function VoteForm() {
           gap: '16px',
           maxWidth: '100%'
         }}>
-          {Object.values(OPTION_NAMES).map((name) => (
+          {Object.values(OPTION_NAMES).map((name, index) => (
             <label key={name} style={{ display: 'flex', alignItems: 'center' }}>
               <input
                 type="radio"
@@ -60,6 +60,7 @@ export default function VoteForm() {
                 checked={formData.option === name}
                 onChange={(e) => setFormData({ ...formData, option: e.target.value })}
                 style={{ marginRight: '8px' }}
+                required={true}
               />
               {name}
             </label>

@@ -26,7 +26,7 @@ export default function Results({ results, totalVotes }: ResultsProps) {
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto space-y-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">Voting Results</h1>
+          <h1 className="text-2xl font-bold text-gray-900">투표 결과</h1>
           <div className="flex space-x-4">
             <Link
               href="/"
