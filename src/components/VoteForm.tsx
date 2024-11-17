@@ -45,29 +45,24 @@ export default function VoteForm() {
   return (
     <form onSubmit={handleSubmit} className="max-w-6xl mx-auto pt-20">
       <div className="mb-40">
-        <div className="grid grid-cols-5 gap-4">
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(5, 1fr)',
+          gap: '16px',
+          maxWidth: '100%'
+        }}>
           {Object.values(OPTION_NAMES).map((name) => (
-            <div 
-              key={name}
-              className={`cursor-pointer p-4 rounded-lg border-2 transition-all ${
-                formData.option === name 
-                  ? 'border-indigo-500 bg-indigo-50' 
-                  : 'border-gray-200 hover:border-indigo-300'
-              }`}
-              onClick={() => setFormData({ ...formData, option: name })}
-            >
-              <div className="flex flex-col items-center space-y-2">
-                <span className="text-center font-medium">{name}</span>
-                <input
-                  type="radio"
-                  name="option"
-                  value={name}
-                  checked={formData.option === name}
-                  onChange={() => {}}
-                  className="mt-2 h-4 w-4 text-indigo-600"
-                />
-              </div>
-            </div>
+            <label key={name} style={{ display: 'flex', alignItems: 'center' }}>
+              <input
+                type="radio"
+                name="vote"
+                value={name}
+                checked={formData.option === name}
+                onChange={(e) => setFormData({ ...formData, option: e.target.value })}
+                style={{ marginRight: '8px' }}
+              />
+              {name}
+            </label>
           ))}
         </div>
       </div>
