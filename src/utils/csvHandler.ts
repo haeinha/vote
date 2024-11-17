@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { parse, stringify } from 'csv/sync';
+import { OPTION_NAMES } from './constants';
 
 const CSV_PATH = path.join(process.cwd(), 'data', 'votes.csv');
 
@@ -52,32 +53,23 @@ export const saveVote = async (vote: Vote): Promise<{ isUpdate: boolean }> => {
 
 
 export const getResults = async () => {
+  const initialResults = Object.fromEntries(
+    Object.values(OPTION_NAMES).map(option => [option, 0])
+  );
+
   if (!fs.existsSync(CSV_PATH)) {
     return {
       totalVotes: 0,
-      results: {
-        'Option 1': 0,
-        'Option 2': 0,
-        'Option 3': 0,
-        'Option 4': 0,
-        'Option 5': 0,
-      }
+      results: initialResults
     };
   }
 
   const content = fs.readFileSync(CSV_PATH, 'utf-8');
   const records = parse(content, { columns: true });
 
-  const results = {
-    'Option 1': 0,
-    'Option 2': 0,
-    'Option 3': 0,
-    'Option 4': 0,
-    'Option 5': 0,
-  };
-
+  const results = { ...initialResults };
   records.forEach((record: Vote) => {
-    results[record.option as keyof typeof results]++;
+    results[record.option]++;
   });
 
   return {

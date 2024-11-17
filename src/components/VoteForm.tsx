@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { OPTION_NAMES } from '../utils/constants';
 
 const OPTIONS = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
 
@@ -42,63 +43,63 @@ export default function VoteForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Employee Number
-        </label>
-        <input
-          type="text"
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          value={formData.employeeNumber}
-          onChange={(e) => setFormData({ ...formData, employeeNumber: e.target.value })}
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Name
-        </label>
-        <input
-          type="text"
-          required
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Select an Option
-        </label>
-        <div className="mt-4 space-y-4">
-          {OPTIONS.map((option) => (
-            <div key={option} className="flex items-center">
-              <input
-                type="radio"
-                name="option"
-                value={option}
-                required
-                className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                onChange={(e) => setFormData({ ...formData, option: e.target.value })}
-              />
-              <label className="ml-3 block text-sm font-medium text-gray-700">
-                {option}
-              </label>
+    <form onSubmit={handleSubmit} className="max-w-6xl mx-auto">
+      <div className="mb-20">
+        <div className="grid grid-cols-5 gap-4">
+          {Object.entries(OPTION_NAMES).map(([key, name]) => (
+            <div 
+              key={key}
+              className={`cursor-pointer p-4 rounded-lg border-2 transition-all ${
+                formData.option === name 
+                  ? 'border-indigo-500 bg-indigo-50' 
+                  : 'border-gray-200 hover:border-indigo-300'
+              }`}
+              onClick={() => setFormData({ ...formData, option: name })}
+            >
+              <div className="flex flex-col items-center space-y-2">
+                <span className="text-sm text-gray-500">{key}</span>
+                <span className="text-center font-medium">{name}</span>
+                <input
+                  type="radio"
+                  name="option"
+                  value={name}
+                  checked={formData.option === name}
+                  onChange={() => {}}
+                  className="mt-2 h-4 w-4 text-indigo-600"
+                />
+              </div>
             </div>
           ))}
         </div>
       </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-      >
-        {loading ? 'Submitting...' : 'Submit Vote'}
-      </button>
+      <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg border-t">
+        <div className="max-w-6xl mx-auto flex gap-4">
+          <input
+            type="text"
+            placeholder="Employee Number"
+            required
+            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500"
+            value={formData.employeeNumber}
+            onChange={(e) => setFormData({ ...formData, employeeNumber: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Name"
+            required
+            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          />
+          <button
+            type="submit"
+            disabled={loading}
+            className="px-8 py-2 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
+          >
+            {loading ? 'Submitting...' : 'Vote'}
+          </button>
+        </div>
+      </div>
     </form>
   );
-} 
+}
