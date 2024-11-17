@@ -68,6 +68,7 @@ export default function VoteChart({ results, totalVotes }: VoteChartProps) {
         beginAtZero: true,
         ticks: {
           stepSize: 1,
+          display: false,
         },
       },
       y: {
