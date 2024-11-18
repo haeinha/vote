@@ -6,6 +6,7 @@ const OPTIONS = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
 
 export default function VoteForm() {
   const router = useRouter();
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     employeeNumber: '',
     name: '',
@@ -13,15 +14,34 @@ export default function VoteForm() {
   });
   const [loading, setLoading] = useState(false);
 
+  const handleCheckboxChange = (option: string) => {
+    setSelectedOptions(prev => {
+      if (prev.includes(option)) {
+        return prev.filter(item => item !== option);
+      }
+      if (prev.length >= 3) {
+        return prev;
+      }
+      return [...prev, option];
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (selectedOptions.length !== 3) {
+      alert('Please select exactly 3 options');
+      return;
+    }
     setLoading(true);
 
     try {
       const response = await fetch('/api/vote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          options: selectedOptions
+        }),
       });
 
       const data = await response.json();
@@ -51,24 +71,24 @@ export default function VoteForm() {
           gap: '16px',
           maxWidth: '100%'
         }}>
-          {Object.values(OPTION_NAMES).map((name, index) => (
+          {Object.values(OPTION_NAMES).map((name) => (
             <label key={name} style={{ display: 'flex', alignItems: 'center' }}>
               <input
-                type="radio"
-                name="vote"
+                type="checkbox"
                 value={name}
-                checked={formData.option === name}
-                onChange={(e) => setFormData({ ...formData, option: e.target.value })}
+                checked={selectedOptions.includes(name)}
+                onChange={() => handleCheckboxChange(name)}
                 style={{ marginRight: '8px' }}
-                required={true}
               />
               {name}
             </label>
           ))}
         </div>
+        <div style={{ height: '30px' }}></div>
+        <div className="text-sm text-gray-500 mt-4">
+          ({selectedOptions.length}/3 선택되었습니다)
+        </div>
       </div>
-
-      <div style={{ height: '30px' }}></div>
 
       <div className="fixed bottom-0 left-0 right-0 bg-white p-4 shadow-lg border-t">
         <div className="max-w-6xl mx-auto flex gap-4">
@@ -90,7 +110,7 @@ export default function VoteForm() {
           />
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || selectedOptions.length !== 3}
             className="px-8 py-2 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50"
           >
             {loading ? 'Submitting...' : 'Vote'}
