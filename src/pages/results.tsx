@@ -51,15 +51,15 @@ const RankImage = styled.div<{ rank: number }>`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 3px solid #9fff9c;
+  border: none;
   background: ${props => {
     switch (props.rank) {
       case 1:
-        return 'linear-gradient(135deg, #FFD700, #FDB931, #FFD700)';
+        return 'linear-gradient(135deg, #FFD700, #FDB931)';
       case 2:
-        return 'linear-gradient(135deg, #C0C0C0, #E8E8E8, #C0C0C0)';
+        return 'linear-gradient(135deg, #C0C0C0, #E8E8E8)';
       case 3:
-        return 'linear-gradient(135deg, #CD7F32, #FFA07A, #CD7F32)';
+        return 'linear-gradient(135deg, #CD7F32, #FFA07A)';
       default:
         return 'rgba(159, 255, 156, 0.1)';
     }
@@ -74,6 +74,18 @@ const RankImage = styled.div<{ rank: number }>`
   position: relative;
   flex-direction: column;
   gap: 5px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: url('/wreath.png') no-repeat center center;
+    background-size: contain;
+    z-index: -1;
+    opacity: ${props => props.rank === 1 ? 1 : props.rank === 2 ? 0.9 : 0.8};
+  }
 `;
 
 const VoteCount = styled.div`
@@ -146,6 +158,21 @@ const RankItem = styled.div`
   }
 `;
 
+const Stars = styled.div<{ rank: number }>`
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3px;
+
+  &::before {
+    content: '⭐'.repeat(5);
+    color: ${props => props.rank === 1 ? '#FFD700' : props.rank === 2 ? '#C0C0C0' : '#CD7F32'};
+    font-size: 12px;
+  }
+`;
+
 interface ResultsProps {
   results: Record<string, number>;
   totalVotes: number;
@@ -184,6 +211,7 @@ export default function Results({ results, totalVotes }: ResultsProps) {
             
             return (
               <RankCircle key={option} rank={actualRank}>
+                <Stars rank={actualRank} />
                 <RankImage rank={actualRank}>
                   {actualRank === 1 && <Crown>👑</Crown>}
                   <VoteCount>{votes.toLocaleString()}표</VoteCount>
