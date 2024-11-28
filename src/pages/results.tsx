@@ -3,21 +3,35 @@ import Link from 'next/link';
 import { getResults } from '../utils/csvHandler';
 import { OPTION_NAMES } from '../utils/constants';
 import styled from 'styled-components';
+import backgroundImage from '@/app/image/wallpaper.png'
 
 const ResultContainer = styled.div`
-  background-color: #000;
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(0, 255, 0, 0.05) 0%, transparent 20%),
-    radial-gradient(circle at 90% 50%, rgba(0, 100, 255, 0.05) 0%, transparent 30%),
-    linear-gradient(to bottom, #000, #001);
+  font-family: 'LG Smart', sans-serif;
+  background-image: url(${backgroundImage.src});
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   min-height: 100vh;
+  width: 100%;
   padding: 20px;
   color: white;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+  }
 `;
 
 const ContentWrapper = styled.div`
-  max-width: 600px;
-  margin: 0 auto;
+  position: relative;
+  z-index: 1;
 `;
 
 const Header = styled.div`
@@ -26,11 +40,15 @@ const Header = styled.div`
   margin-bottom: 30px;
 `;
 
-const Title = styled.div`
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 8px 20px;
-  border-radius: 20px;
-  color: #9fff9c;
+const Title = styled.h1`
+  color: white;
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 100px;
+  font-weight: bold;
+  font-family: 'LG Smart', sans-serif;
+  padding-top: 30px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
 const TopThree = styled.div`
@@ -94,8 +112,9 @@ const VoteCount = styled.div`
 `;
 
 const VotePercentage = styled.div`
-  font-size: 14px;
-  color: #9fff9c;
+  color: #1C1C1C;
+  font-weight: bold;
+  font-size: 18px;
 `;
 
 const Crown = styled.div`
@@ -197,13 +216,7 @@ export default function Results({ results, totalVotes }: ResultsProps) {
   return (
     <ResultContainer>
       <ContentWrapper>
-        <Header>
-          <Title>
-            24년도 ID사업부<br />
-            기술 성과 공유회
-          </Title>
-        </Header>
-
+        <Title>24년도 ID사업부 기술성과 공유회</Title>
         <TopThree>
           {getTopThree().map(([option, votes], index) => {
             const actualRank = index === 1 ? 1 : index === 0 ? 2 : 3;
