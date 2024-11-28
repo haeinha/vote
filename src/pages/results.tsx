@@ -202,8 +202,20 @@ export default function Results({ results, totalVotes }: ResultsProps) {
     .sort(([, a], [, b]) => b - a);
 
   const getTopThree = () => {
+    if (sortedResults.length === 0) {
+      // Return dummy data when no votes exist
+      return [
+        ['No votes yet', 0],
+        ['No votes yet', 0],
+        ['No votes yet', 0]
+      ];
+    }
     const [first, second, third] = sortedResults;
-    return [second, first, third];
+    return [
+      second || ['No votes yet', 0],
+      first || ['No votes yet', 0],
+      third || ['No votes yet', 0]
+    ];
   };
 
   // Create an array of all options with 0 votes for unvoted options
@@ -220,7 +232,7 @@ export default function Results({ results, totalVotes }: ResultsProps) {
         <TopThree>
           {getTopThree().map(([option, votes], index) => {
             const actualRank = index === 1 ? 1 : index === 0 ? 2 : 3;
-            const percentage = ((votes / totalVotes) * 100).toFixed(1);
+            const percentage = ((votes as number / totalVotes) * 100).toFixed(1);
             
             return (
               <RankCircle key={option} rank={actualRank}>
