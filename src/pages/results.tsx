@@ -47,12 +47,23 @@ const RankCircle = styled.div<{ rank: number }>`
   margin-top: ${props => props.rank === 1 ? '0' : '40px'};
 `;
 
-const RankImage = styled.div`
+const RankImage = styled.div<{ rank: number }>`
   width: 100px;
   height: 100px;
   border-radius: 50%;
   border: 3px solid #9fff9c;
-  background-color: rgba(159, 255, 156, 0.1);
+  background: ${props => {
+    switch (props.rank) {
+      case 1:
+        return 'linear-gradient(135deg, #FFD700, #FDB931, #FFD700)';
+      case 2:
+        return 'linear-gradient(135deg, #C0C0C0, #E8E8E8, #C0C0C0)';
+      case 3:
+        return 'linear-gradient(135deg, #CD7F32, #FFA07A, #CD7F32)';
+      default:
+        return 'rgba(159, 255, 156, 0.1)';
+    }
+  }};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,6 +72,18 @@ const RankImage = styled.div`
   padding: 10px;
   text-align: center;
   position: relative;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+const VoteCount = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+const VotePercentage = styled.div`
+  font-size: 14px;
+  color: #9fff9c;
 `;
 
 const Crown = styled.div`
@@ -71,15 +94,17 @@ const Crown = styled.div`
   font-size: 24px;
 `;
 
-const RankInfo = styled.div`
+const RankInfo = styled.div<{ rank: number }>`
   margin-top: 10px;
   color: white;
+  font-size: ${props => props.rank === 1 ? '18px' : props.rank === 2 ? '16px' : '14px'};
 `;
 
-const Score = styled.div`
+const Score = styled.div<{ rank: number }>`
   color: #9fff9c;
   font-weight: bold;
   margin-top: 5px;
+  font-size: ${props => props.rank === 1 ? '24px' : props.rank === 2 ? '20px' : '18px'};
 `;
 
 const ListContainer = styled.div`
@@ -155,15 +180,18 @@ export default function Results({ results, totalVotes }: ResultsProps) {
         <TopThree>
           {getTopThree().map(([option, votes], index) => {
             const actualRank = index === 1 ? 1 : index === 0 ? 2 : 3;
+            const percentage = ((votes / totalVotes) * 100).toFixed(1);
+            
             return (
               <RankCircle key={option} rank={actualRank}>
-                <RankImage>
+                <RankImage rank={actualRank}>
                   {actualRank === 1 && <Crown>👑</Crown>}
-                  {option}
+                  <VoteCount>{votes.toLocaleString()}표</VoteCount>
+                  <VotePercentage>{percentage}%</VotePercentage>
                 </RankImage>
-                <RankInfo>
+                <RankInfo rank={actualRank}>
                   <div>{option}</div>
-                  <Score>{votes.toLocaleString()}</Score>
+                  <Score rank={actualRank}>{actualRank}등</Score>
                 </RankInfo>
               </RankCircle>
             );
