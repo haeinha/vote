@@ -51,7 +51,6 @@ export default function VoteForm() {
           ? 'Your previous vote has been updated!' 
           : 'Thank you for voting!'
         );
-        router.push('/results');
       } else {
         alert(data.message || 'Error submitting vote');
       }
