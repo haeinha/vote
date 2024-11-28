@@ -10,7 +10,14 @@ export default async function handler(
   }
 
   try {
-    const { isUpdate } = await saveVote(req.body);
+    const { employeeNumber, name, options } = req.body;
+    
+    if (!Array.isArray(options) || options.length !== 3) {
+      return res.status(400).json({ message: 'Please select exactly 3 options' });
+    }
+
+    const { isUpdate } = await saveVote({ employeeNumber, name, options });
+    
     res.status(200).json({ 
       message: isUpdate ? 'Vote updated successfully' : 'Vote recorded successfully',
       isUpdate 
