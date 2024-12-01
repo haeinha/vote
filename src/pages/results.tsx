@@ -4,6 +4,7 @@ import { getResults } from '../utils/csvHandler';
 import { OPTION_NAMES } from '../utils/constants';
 import styled from 'styled-components';
 import backgroundImage from '@/app/image/wallpaper.png'
+import { useState, useEffect } from 'react';
 
 const ResultContainer = styled.div`
   font-family: 'LG Smart', sans-serif;
@@ -192,12 +193,38 @@ const Stars = styled.div<{ rank: number }>`
   }
 `;
 
+const UpdateTime = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #9fff9c;
+  font-size: 14px;
+  z-index: 1;
+`;
+
 interface ResultsProps {
   results: Record<string, number>;
   totalVotes: number;
 }
 
-export default function Results({ results, totalVotes }: ResultsProps) {
+export default function Results({ results: initialResults, totalVotes: initialTotal }: ResultsProps) {
+  const [results, setResults] = useState(initialResults);
+  const [totalVotes, setTotalVotes] = useState(initialTotal);
+  const [lastUpdate, setLastUpdate] = useState<string>(new Date().toLocaleTimeString('ko-KR'));
+
+  useEffect(() => {
+    const fetchNewData = async () => {
+      const response = await fetch('/api/results');
+      const newData = await response.json();
+      setResults(newData.results);
+      setTotalVotes(newData.totalVotes);
+      setLastUpdate(new Date().toLocaleTimeString('ko-KR'));
+    };
+
+    const interval = setInterval(fetchNewData, 60000); // Update every minute
+    return () => clearInterval(interval);
+  }, []);
+
   const sortedResults = Object.entries(results)
     .sort(([, a], [, b]) => b - a);
 
@@ -228,6 +255,9 @@ export default function Results({ results, totalVotes }: ResultsProps) {
   return (
     <ResultContainer>
       <ContentWrapper>
+        <UpdateTime>
+          마지막 업데이트: {lastUpdate}
+        </UpdateTime>
         <Title>24년도 ID사업부 기술성과 공유회</Title>
         <TopThree>
           {getTopThree().map(([option, votes], index) => {
