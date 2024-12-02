@@ -65,11 +65,22 @@ export default function VoteForm() {
   return (
     <form onSubmit={handleSubmit} className="max-w-6xl mx-auto">
       <div
+        className="text-sm text-gray-500 mt-4"
+        style={{ textAlign: "right" }}
+      >
+        ({selectedOptions.length}/3 선택되었습니다)
+      </div>
+
+      <div style={{ height: "40px" }}></div>
+
+      <div
         style={{
           display: "flex",
           gap: "16px",
           marginBottom: "40px",
           padding: "0 24px",
+          width: "75%",
+          margin: "0 auto",
         }}
       >
         <input
@@ -124,6 +135,8 @@ export default function VoteForm() {
         </button>
       </div>
 
+      <div style={{ height: "40px" }}></div>
+
       <div className="mb-40">
         <div
           style={{
@@ -147,9 +160,6 @@ export default function VoteForm() {
           ))}
         </div>
         <div style={{ height: "30px" }}></div>
-        <div className="text-sm text-gray-500 mt-4">
-          ({selectedOptions.length}/3 선택되었습니다)
-        </div>
       </div>
     </form>
   );
