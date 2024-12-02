@@ -1,9 +1,11 @@
+import React from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { getResults } from "../utils/csvHandler";
 import { OPTION_NAMES } from "../utils/constants";
 import styled from "styled-components";
-import backgroundImage from "@/app/image/wallpaper.png";
+import backgroundImage from "@/app/image/cutton.png";
+// import backgroundImage from "@/app/image/snow.png";
 import { useState, useEffect } from "react";
 
 const ResultContainer = styled.div`
@@ -35,8 +37,9 @@ const ResultContainer = styled.div`
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 1;
-  width: 75%;
-  max-width: 1200px;
+  width: 90%;
+  max-width: 1600px;
+  margin: 0 auto;
 `;
 
 const Title = styled.h1`
@@ -65,8 +68,10 @@ const RankCircle = styled.div<{ rank: number }>`
 `;
 
 const RankImage = styled.div<{ rank: number }>`
-  width: 100px;
-  height: 100px;
+  width: ${(props) =>
+    props.rank === 1 ? "200px" : props.rank === 2 ? "180px" : "160px"};
+  height: ${(props) =>
+    props.rank === 1 ? "200px" : props.rank === 2 ? "180px" : "160px"};
   border-radius: 50%;
   border: none;
   background: ${(props) => {
@@ -96,8 +101,10 @@ const RankImage = styled.div<{ rank: number }>`
   &::before {
     content: "";
     position: absolute;
-    width: 140px;
-    height: 140px;
+    width: ${(props) =>
+      props.rank === 1 ? "250px" : props.rank === 2 ? "230px" : "210px"};
+    height: ${(props) =>
+      props.rank === 1 ? "250px" : props.rank === 2 ? "230px" : "210px"};
     background: url("/wreath.png") no-repeat center center;
     background-size: contain;
     z-index: -1;
@@ -106,15 +113,21 @@ const RankImage = styled.div<{ rank: number }>`
   }
 `;
 
-const VoteCount = styled.div`
-  font-size: 18px;
+interface VoteCountProps {
+  rank: number;
+}
+
+const VoteCount = styled.div<VoteCountProps>`
+  font-size: ${(props) =>
+    props.rank === 1 ? "24px" : props.rank === 2 ? "22px" : "20px"};
   font-weight: bold;
 `;
 
-const VotePercentage = styled.div`
+const VotePercentage = styled.div<VoteCountProps>`
   color: #1c1c1c;
   font-weight: bold;
-  font-size: 18px;
+  font-size: ${(props) =>
+    props.rank === 1 ? "24px" : props.rank === 2 ? "22px" : "20px"};
 `;
 
 const Crown = styled.div`
@@ -322,8 +335,12 @@ export default function Results({
                 <Stars rank={actualRank} />
                 <RankImage rank={actualRank}>
                   {actualRank === 1 && <Crown>👑</Crown>}
-                  <VoteCount>{votes.toLocaleString()}표</VoteCount>
-                  <VotePercentage>{percentage}%</VotePercentage>
+                  <VoteCount rank={actualRank}>
+                    {votes.toLocaleString()}표
+                  </VoteCount>
+                  <VotePercentage rank={actualRank}>
+                    {percentage}%
+                  </VotePercentage>
                 </RankImage>
                 <RankInfo rank={actualRank}>
                   <div>{option}</div>

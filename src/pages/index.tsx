@@ -1,10 +1,18 @@
 import VoteForm from "../components/VoteForm";
 import Link from "next/link";
+import styled from "styled-components";
+
+const VoteContainer = styled.div`
+  width: 100%;
+  max-width: 100%;
+  padding: 20px;
+  margin: 0 auto;
+`;
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6">
-      <div style={{ width: "75%", margin: "0 auto" }}>
+      <div style={{ width: "100%", margin: "0 auto" }}>
         <div className="text-center mb-12">
           <h2 className="text-3xl font-extrabold text-gray-900">
             24년도 성과 공유회 투표
@@ -14,12 +22,9 @@ export default function Home() {
           </p>
         </div>
 
-        <div
-          className="bg-white shadow-xl rounded-2xl p-8"
-          style={{ width: "75%", margin: "0 auto" }}
-        >
+        <VoteContainer>
           <VoteForm />
-        </div>
+        </VoteContainer>
         <div style={{ height: "30px" }}></div>
 
         <div className="mt-8 text-center">

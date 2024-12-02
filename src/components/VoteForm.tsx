@@ -76,7 +76,7 @@ export default function VoteForm() {
           gap: "16px",
           marginBottom: "40px",
           padding: "0 24px",
-          width: "75%",
+          width: "90%",
           margin: "0 auto",
         }}
       >
@@ -138,9 +138,10 @@ export default function VoteForm() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
+            gridTemplateColumns: "repeat(4, 1fr)",
             gap: "16px",
             maxWidth: "100%",
+            padding: "0 24px",
           }}
         >
           {Object.values(OPTION_NAMES).map((name) => (
