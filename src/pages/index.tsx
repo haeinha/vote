@@ -1,5 +1,5 @@
-import VoteForm from '../components/VoteForm';
-import Link from 'next/link';
+import VoteForm from "../components/VoteForm";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -12,16 +12,17 @@ export default function Home() {
           <p className="mt-2 text-lg text-gray-600">
             모두 고생하였지만, 가장 성과가 뛰어나다고 생각하는 팀에 투표해주세요
           </p>
+          <p className="text-sm text-gray-500 mt-4">(0/3 선택되었습니다)</p>
         </div>
-        
+
         <div className="bg-white shadow-xl rounded-2xl p-8">
           <VoteForm />
         </div>
-        <div style={{ height: '30px' }}></div>
+        <div style={{ height: "30px" }}></div>
 
         <div className="mt-8 text-center">
-          <Link 
-            href="/results" 
+          <Link
+            href="/results"
             className="text-indigo-600 hover:text-indigo-500 font-medium"
           >
             View Results →
@@ -30,4 +31,4 @@ export default function Home() {
       </div>
     </div>
   );
-} 
+}

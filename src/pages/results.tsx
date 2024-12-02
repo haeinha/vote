@@ -1,13 +1,13 @@
-import { GetServerSideProps } from 'next';
-import Link from 'next/link';
-import { getResults } from '../utils/csvHandler';
-import { OPTION_NAMES } from '../utils/constants';
-import styled from 'styled-components';
-import backgroundImage from '@/app/image/wallpaper.png'
-import { useState, useEffect } from 'react';
+import { GetServerSideProps } from "next";
+import Link from "next/link";
+import { getResults } from "../utils/csvHandler";
+import { OPTION_NAMES } from "../utils/constants";
+import styled from "styled-components";
+import backgroundImage from "@/app/image/wallpaper.png";
+import { useState, useEffect } from "react";
 
 const ResultContainer = styled.div`
-  font-family: 'LG Smart', sans-serif;
+  font-family: "LG Smart", sans-serif;
   background-image: url(${backgroundImage.src});
   background-size: 100% 100%;
   background-position: center;
@@ -17,9 +17,11 @@ const ResultContainer = styled.div`
   width: 100%;
   padding: 20px;
   color: white;
-  
+  display: flex;
+  justify-content: center;
+
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -33,6 +35,8 @@ const ResultContainer = styled.div`
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 1;
+  width: 75%;
+  max-width: 1200px;
 `;
 
 const Header = styled.div`
@@ -47,7 +51,7 @@ const Title = styled.h1`
   text-align: center;
   margin-bottom: 100px;
   font-weight: bold;
-  font-family: 'LG Smart', sans-serif;
+  font-family: "LG Smart", sans-serif;
   padding-top: 30px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `;
@@ -62,8 +66,8 @@ const TopThree = styled.div`
 const RankCircle = styled.div<{ rank: number }>`
   text-align: center;
   position: relative;
-  transform: ${props => props.rank === 1 ? 'scale(1.2)' : 'scale(1)'};
-  margin-top: ${props => props.rank === 1 ? '0' : '40px'};
+  transform: ${(props) => (props.rank === 1 ? "scale(1.2)" : "scale(1)")};
+  margin-top: ${(props) => (props.rank === 1 ? "0" : "40px")};
 `;
 
 const RankImage = styled.div<{ rank: number }>`
@@ -71,16 +75,16 @@ const RankImage = styled.div<{ rank: number }>`
   height: 100px;
   border-radius: 50%;
   border: none;
-  background: ${props => {
+  background: ${(props) => {
     switch (props.rank) {
       case 1:
-        return 'linear-gradient(135deg, #FFD700, #FDB931)';
+        return "linear-gradient(135deg, #FFD700, #FDB931)";
       case 2:
-        return 'linear-gradient(135deg, #C0C0C0, #E8E8E8)';
+        return "linear-gradient(135deg, #C0C0C0, #E8E8E8)";
       case 3:
-        return 'linear-gradient(135deg, #CD7F32, #FFA07A)';
+        return "linear-gradient(135deg, #CD7F32, #FFA07A)";
       default:
-        return 'rgba(159, 255, 156, 0.1)';
+        return "rgba(159, 255, 156, 0.1)";
     }
   }};
   display: flex;
@@ -96,14 +100,15 @@ const RankImage = styled.div<{ rank: number }>`
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     width: 140px;
     height: 140px;
-    background: url('/wreath.png') no-repeat center center;
+    background: url("/wreath.png") no-repeat center center;
     background-size: contain;
     z-index: -1;
-    opacity: ${props => props.rank === 1 ? 1 : props.rank === 2 ? 0.9 : 0.8};
+    opacity: ${(props) =>
+      props.rank === 1 ? 1 : props.rank === 2 ? 0.9 : 0.8};
   }
 `;
 
@@ -113,7 +118,7 @@ const VoteCount = styled.div`
 `;
 
 const VotePercentage = styled.div`
-  color: #1C1C1C;
+  color: #1c1c1c;
   font-weight: bold;
   font-size: 18px;
 `;
@@ -129,14 +134,16 @@ const Crown = styled.div`
 const RankInfo = styled.div<{ rank: number }>`
   margin-top: 10px;
   color: white;
-  font-size: ${props => props.rank === 1 ? '18px' : props.rank === 2 ? '16px' : '14px'};
+  font-size: ${(props) =>
+    props.rank === 1 ? "18px" : props.rank === 2 ? "16px" : "14px"};
 `;
 
 const Score = styled.div<{ rank: number }>`
   color: #9fff9c;
   font-weight: bold;
   margin-top: 5px;
-  font-size: ${props => props.rank === 1 ? '24px' : props.rank === 2 ? '20px' : '18px'};
+  font-size: ${(props) =>
+    props.rank === 1 ? "24px" : props.rank === 2 ? "20px" : "18px"};
 `;
 
 const ListContainer = styled.div`
@@ -146,21 +153,24 @@ const ListContainer = styled.div`
   backdrop-filter: blur(5px);
   max-height: 500px;
   overflow-y: auto;
-  
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+
   /* Custom scrollbar */
   &::-webkit-scrollbar {
     width: 8px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba(159, 255, 156, 0.3);
     border-radius: 4px;
-    
+
     &:hover {
       background: rgba(159, 255, 156, 0.5);
     }
@@ -172,9 +182,10 @@ const RankItem = styled.div`
   align-items: center;
   padding: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  
+
   &:last-child {
-    border-bottom: none;
+    border-bottom: ${(props) =>
+      props.isLastInColumn ? "none" : "1px solid rgba(255, 255, 255, 0.1)"};
   }
 `;
 
@@ -187,8 +198,9 @@ const Stars = styled.div<{ rank: number }>`
   gap: 3px;
 
   &::before {
-    content: '⭐'.repeat(5);
-    color: ${props => props.rank === 1 ? '#FFD700' : props.rank === 2 ? '#C0C0C0' : '#CD7F32'};
+    content: "⭐" .repeat(5);
+    color: ${(props) =>
+      props.rank === 1 ? "#FFD700" : props.rank === 2 ? "#C0C0C0" : "#CD7F32"};
     font-size: 12px;
   }
 `;
@@ -207,63 +219,106 @@ interface ResultsProps {
   totalVotes: number;
 }
 
-export default function Results({ results: initialResults, totalVotes: initialTotal }: ResultsProps) {
+export default function Results({
+  results: initialResults,
+  totalVotes: initialTotal,
+}: ResultsProps) {
   const [results, setResults] = useState(initialResults);
   const [totalVotes, setTotalVotes] = useState(initialTotal);
-  const [lastUpdate, setLastUpdate] = useState<string>(new Date().toLocaleTimeString('ko-KR'));
+  const [lastUpdate, setLastUpdate] = useState<string>(
+    new Date().toLocaleTimeString("ko-KR")
+  );
 
   useEffect(() => {
     const fetchNewData = async () => {
-      const response = await fetch('/api/results');
+      const response = await fetch("/api/results");
       const newData = await response.json();
       setResults(newData.results);
       setTotalVotes(newData.totalVotes);
-      setLastUpdate(new Date().toLocaleTimeString('ko-KR'));
+      setLastUpdate(new Date().toLocaleTimeString("ko-KR"));
     };
 
     const interval = setInterval(fetchNewData, 60000); // Update every minute
     return () => clearInterval(interval);
   }, []);
 
-  const sortedResults = Object.entries(results)
-    .sort(([, a], [, b]) => b - a);
+  const sortedResults = Object.entries(results).sort(([, a], [, b]) => b - a);
 
   const getTopThree = () => {
     if (sortedResults.length === 0) {
       // Return dummy data when no votes exist
       return [
-        ['No votes yet', 0],
-        ['No votes yet', 0],
-        ['No votes yet', 0]
+        ["No votes yet", 0],
+        ["No votes yet", 0],
+        ["No votes yet", 0],
       ];
     }
     const [first, second, third] = sortedResults;
     return [
-      second || ['No votes yet', 0],
-      first || ['No votes yet', 0],
-      third || ['No votes yet', 0]
+      second || ["No votes yet", 0],
+      first || ["No votes yet", 0],
+      third || ["No votes yet", 0],
     ];
   };
 
   // Create an array of all options with 0 votes for unvoted options
   const allOptions = Object.values(OPTION_NAMES);
-  const resultsWithZeros = allOptions.map(option => {
-    const votes = results[option] || 0;
-    return [option, votes];
-  }).sort(([, a], [, b]) => (b as number) - (a as number));
+  const resultsWithZeros = allOptions
+    .map((option) => {
+      const votes = results[option] || 0;
+      return [option, votes];
+    })
+    .sort(([, a], [, b]) => (b as number) - (a as number));
+
+  const renderRankItems = (items: [string, number][]) => {
+    const midPoint = Math.ceil(items.length / 2);
+    const leftColumn = items.slice(0, midPoint);
+    const rightColumn = items.slice(midPoint);
+
+    return (
+      <>
+        <div>
+          {leftColumn.map(([option, votes], index) => (
+            <RankItem
+              key={option}
+              isLastInColumn={index === leftColumn.length - 1}
+            >
+              <div style={{ width: "30px", color: "#9fff9c" }}>{index + 4}</div>
+              <div style={{ flex: 1 }}>{option}</div>
+              <div style={{ color: "#9fff9c" }}>{votes.toLocaleString()}</div>
+            </RankItem>
+          ))}
+        </div>
+        <div>
+          {rightColumn.map(([option, votes], index) => (
+            <RankItem
+              key={option}
+              isLastInColumn={index === rightColumn.length - 1}
+            >
+              <div style={{ width: "30px", color: "#9fff9c" }}>
+                {index + 4 + leftColumn.length}
+              </div>
+              <div style={{ flex: 1 }}>{option}</div>
+              <div style={{ color: "#9fff9c" }}>{votes.toLocaleString()}</div>
+            </RankItem>
+          ))}
+        </div>
+      </>
+    );
+  };
 
   return (
     <ResultContainer>
       <ContentWrapper>
-        <UpdateTime>
-          마지막 업데이트: {lastUpdate}
-        </UpdateTime>
+        <UpdateTime>마지막 업데이트: {lastUpdate}</UpdateTime>
         <Title>24년도 ID사업부 기술성과 공유회</Title>
         <TopThree>
           {getTopThree().map(([option, votes], index) => {
             const actualRank = index === 1 ? 1 : index === 0 ? 2 : 3;
-            const percentage = ((votes as number / totalVotes) * 100).toFixed(1);
-            
+            const percentage = (((votes as number) / totalVotes) * 100).toFixed(
+              1
+            );
+
             return (
               <RankCircle key={option} rank={actualRank}>
                 <Stars rank={actualRank} />
@@ -282,17 +337,11 @@ export default function Results({ results: initialResults, totalVotes: initialTo
         </TopThree>
 
         <ListContainer>
-          {resultsWithZeros.slice(3).map(([option, votes], index) => (
-            <RankItem key={option}>
-              <div style={{ width: '30px', color: '#9fff9c' }}>{index + 4}</div>
-              <div style={{ flex: 1 }}>{option}</div>
-              <div style={{ color: '#9fff9c' }}>{votes.toLocaleString()}</div>
-            </RankItem>
-          ))}
+          {renderRankItems(resultsWithZeros.slice(3))}
         </ListContainer>
 
-        <div style={{ textAlign: 'center', marginTop: '40px' }}>
-          <Link href="/" style={{ color: '#9fff9c', textDecoration: 'none' }}>
+        <div style={{ textAlign: "center", marginTop: "40px" }}>
+          <Link href="/" style={{ color: "#9fff9c", textDecoration: "none" }}>
             ← Back to Vote
           </Link>
         </div>
@@ -304,4 +353,4 @@ export default function Results({ results: initialResults, totalVotes: initialTo
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await getResults();
   return { props: data };
-}; 
+};
