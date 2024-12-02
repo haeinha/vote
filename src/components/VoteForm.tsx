@@ -150,9 +150,9 @@ export default function VoteForm() {
             padding: "0 24px",
           }}
         >
-          {Object.values(OPTION_NAMES).map((name) => (
+          {Object.entries(OPTION_NAMES).map(([key, name]) => (
             <label
-              key={name}
+              key={key}
               className="vote-option-label"
               style={{
                 display: "flex",
@@ -175,7 +175,7 @@ export default function VoteForm() {
                   height: "20px",
                 }}
               />
-              {name}
+              {`${key}. ${name}`}
             </label>
           ))}
         </div>
