@@ -39,12 +39,6 @@ const ContentWrapper = styled.div`
   max-width: 1200px;
 `;
 
-const Header = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-`;
-
 const Title = styled.h1`
   color: white;
   font-size: 3rem;
@@ -177,7 +171,11 @@ const ListContainer = styled.div`
   }
 `;
 
-const RankItem = styled.div`
+interface RankItemProps {
+  isLastInColumn?: boolean;
+}
+
+const RankItem = styled.div<RankItemProps>`
   display: flex;
   align-items: center;
   padding: 15px;
@@ -337,7 +335,7 @@ export default function Results({
         </TopThree>
 
         <ListContainer>
-          {renderRankItems(resultsWithZeros.slice(3))}
+          {renderRankItems(resultsWithZeros.slice(3) as [string, number][])}
         </ListContainer>
 
         <div style={{ textAlign: "center", marginTop: "40px" }}>

@@ -1,11 +1,7 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import { OPTION_NAMES } from "../utils/constants";
 
-const OPTIONS = ["Option 1", "Option 2", "Option 3", "Option 4", "Option 5"];
-
 export default function VoteForm() {
-  const router = useRouter();
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     employeeNumber: "",
@@ -56,6 +52,7 @@ export default function VoteForm() {
         alert(data.message || "Error submitting vote");
       }
     } catch (error) {
+      console.log(error);
       alert("Error submitting vote");
     } finally {
       setLoading(false);
@@ -147,13 +144,29 @@ export default function VoteForm() {
           }}
         >
           {Object.values(OPTION_NAMES).map((name) => (
-            <label key={name} style={{ display: "flex", alignItems: "center" }}>
+            <label
+              key={name}
+              className="vote-option-label"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                fontSize: "1.125rem",
+                padding: "12px 8px",
+                cursor: "pointer",
+                borderRadius: "8px",
+                transition: "background-color 0.2s",
+              }}
+            >
               <input
                 type="checkbox"
                 value={name}
                 checked={selectedOptions.includes(name)}
                 onChange={() => handleCheckboxChange(name)}
-                style={{ marginRight: "8px" }}
+                style={{
+                  marginRight: "12px",
+                  width: "20px",
+                  height: "20px",
+                }}
               />
               {name}
             </label>
