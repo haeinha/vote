@@ -58,6 +58,7 @@ const TopThree = styled.div`
   justify-content: space-around;
   align-items: flex-start;
   margin-bottom: 30px;
+  padding: 0 10%;
 `;
 
 const RankCircle = styled.div<{ rank: number }>`
@@ -97,20 +98,6 @@ const RankImage = styled.div<{ rank: number }>`
   flex-direction: column;
   gap: 5px;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-
-  &::before {
-    content: "";
-    position: absolute;
-    width: ${(props) =>
-      props.rank === 1 ? "350px" : props.rank === 2 ? "310px" : "270px"};
-    height: ${(props) =>
-      props.rank === 1 ? "350px" : props.rank === 2 ? "310px" : "270px"};
-    background: url("/wreath.png") no-repeat center center;
-    background-size: contain;
-    z-index: -1;
-    opacity: ${(props) =>
-      props.rank === 1 ? 1 : props.rank === 2 ? 0.9 : 0.8};
-  }
 `;
 
 interface VoteCountProps {
@@ -143,6 +130,12 @@ const RankInfo = styled.div<{ rank: number }>`
   color: white;
   font-size: ${(props) =>
     props.rank === 1 ? "24px" : props.rank === 2 ? "22px" : "20px"};
+  text-align: center;
+  max-width: ${(props) =>
+    props.rank === 1 ? "300px" : props.rank === 2 ? "260px" : "220px"};
+  margin-left: auto;
+  margin-right: auto;
+  word-wrap: break-word;
 `;
 
 const Score = styled.div<{ rank: number }>`
@@ -161,7 +154,7 @@ const ListContainer = styled.div`
   width: 80%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   font-size: 18px;
 `;
@@ -265,17 +258,18 @@ export default function Results({
     .sort(([, a], [, b]) => (b as number) - (a as number));
 
   const renderRankItems = (items: [string, number][]) => {
-    const midPoint = Math.ceil(items.length / 2);
-    const leftColumn = items.slice(0, midPoint);
-    const rightColumn = items.slice(midPoint);
+    const itemsPerColumn = Math.ceil(items.length / 3);
+    const firstColumn = items.slice(0, itemsPerColumn);
+    const secondColumn = items.slice(itemsPerColumn, itemsPerColumn * 2);
+    const thirdColumn = items.slice(itemsPerColumn * 2);
 
     return (
       <>
         <div>
-          {leftColumn.map(([option, votes], index) => (
+          {firstColumn.map(([option, votes], index) => (
             <RankItem
               key={option}
-              isLastInColumn={index === leftColumn.length - 1}
+              isLastInColumn={index === firstColumn.length - 1}
             >
               <div style={{ width: "30px", color: "#9fff9c" }}>{index + 4}</div>
               <div style={{ flex: 1 }}>{option}</div>
@@ -284,13 +278,27 @@ export default function Results({
           ))}
         </div>
         <div>
-          {rightColumn.map(([option, votes], index) => (
+          {secondColumn.map(([option, votes], index) => (
             <RankItem
               key={option}
-              isLastInColumn={index === rightColumn.length - 1}
+              isLastInColumn={index === secondColumn.length - 1}
             >
               <div style={{ width: "30px", color: "#9fff9c" }}>
-                {index + 4 + leftColumn.length}
+                {index + 4 + firstColumn.length}
+              </div>
+              <div style={{ flex: 1 }}>{option}</div>
+              <div style={{ color: "#9fff9c" }}>{votes.toLocaleString()}</div>
+            </RankItem>
+          ))}
+        </div>
+        <div>
+          {thirdColumn.map(([option, votes], index) => (
+            <RankItem
+              key={option}
+              isLastInColumn={index === thirdColumn.length - 1}
+            >
+              <div style={{ width: "30px", color: "#9fff9c" }}>
+                {index + 4 + firstColumn.length + secondColumn.length}
               </div>
               <div style={{ flex: 1 }}>{option}</div>
               <div style={{ color: "#9fff9c" }}>{votes.toLocaleString()}</div>
