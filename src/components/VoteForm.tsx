@@ -48,6 +48,12 @@ export default function VoteForm() {
             ? "Your previous vote has been updated!"
             : "Thank you for voting!"
         );
+        setFormData({
+          employeeNumber: "",
+          name: "",
+          option: "",
+        });
+        setSelectedOptions([]);
       } else {
         alert(data.message || "Error submitting vote");
       }

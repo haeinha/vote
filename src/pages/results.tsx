@@ -43,14 +43,17 @@ const ContentWrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  color: white;
+  background: #9fff9c;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   font-size: 4rem;
   text-align: center;
   margin-bottom: 120px;
   font-weight: bold;
   font-family: "LG Smart", sans-serif;
   padding-top: 40px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: none;
 `;
 
 const TopThree = styled.div`
@@ -129,7 +132,7 @@ const RankInfo = styled.div<{ rank: number }>`
   margin-top: 20px;
   color: white;
   font-size: ${(props) =>
-    props.rank === 1 ? "24px" : props.rank === 2 ? "22px" : "20px"};
+    props.rank === 1 ? "24px" : props.rank === 2 ? "24px" : "24px"};
   text-align: center;
   max-width: ${(props) =>
     props.rank === 1 ? "300px" : props.rank === 2 ? "260px" : "220px"};
@@ -143,7 +146,7 @@ const Score = styled.div<{ rank: number }>`
   font-weight: bold;
   margin-top: 10px;
   font-size: ${(props) =>
-    props.rank === 1 ? "32px" : props.rank === 2 ? "28px" : "24px"};
+    props.rank === 1 ? "40px" : props.rank === 2 ? "40px" : "40px"};
 `;
 
 const ListContainer = styled.div`
@@ -156,7 +159,7 @@ const ListContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30px;
-  font-size: 18px;
+  font-size: 20px;
 `;
 
 interface RankItemProps {
@@ -168,7 +171,7 @@ const RankItem = styled.div<RankItemProps>`
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  font-size: 18px;
+  font-size: 24px;
 
   &:last-child {
     border-bottom: ${(props) =>
@@ -271,8 +274,8 @@ export default function Results({
               key={option}
               isLastInColumn={index === firstColumn.length - 1}
             >
-              <div style={{ width: "30px", color: "#9fff9c" }}>{index + 4}</div>
-              <div style={{ flex: 1 }}>{option}</div>
+              <div style={{ width: "50px", color: "#9fff9c" }}>{index + 4}</div>
+              <div style={{ flex: 1, marginLeft: "20px" }}>{option}</div>
               <div style={{ color: "#9fff9c" }}>{votes.toLocaleString()}</div>
             </RankItem>
           ))}
@@ -283,10 +286,10 @@ export default function Results({
               key={option}
               isLastInColumn={index === secondColumn.length - 1}
             >
-              <div style={{ width: "30px", color: "#9fff9c" }}>
+              <div style={{ width: "50px", color: "#9fff9c" }}>
                 {index + 4 + firstColumn.length}
               </div>
-              <div style={{ flex: 1 }}>{option}</div>
+              <div style={{ flex: 1, marginLeft: "20px" }}>{option}</div>
               <div style={{ color: "#9fff9c" }}>{votes.toLocaleString()}</div>
             </RankItem>
           ))}
@@ -297,10 +300,10 @@ export default function Results({
               key={option}
               isLastInColumn={index === thirdColumn.length - 1}
             >
-              <div style={{ width: "30px", color: "#9fff9c" }}>
+              <div style={{ width: "50px", color: "#9fff9c" }}>
                 {index + 4 + firstColumn.length + secondColumn.length}
               </div>
-              <div style={{ flex: 1 }}>{option}</div>
+              <div style={{ flex: 1, marginLeft: "20px" }}>{option}</div>
               <div style={{ color: "#9fff9c" }}>{votes.toLocaleString()}</div>
             </RankItem>
           ))}
