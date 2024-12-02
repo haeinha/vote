@@ -341,7 +341,7 @@ export default function Results({
             );
           })}
         </TopThree>
-
+        <div style={{ height: "40px" }}></div>
         <ListContainer>
           {renderRankItems(resultsWithZeros.slice(3) as [string, number][])}
         </ListContainer>
