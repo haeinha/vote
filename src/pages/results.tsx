@@ -37,19 +37,19 @@ const ResultContainer = styled.div`
 const ContentWrapper = styled.div`
   position: relative;
   z-index: 1;
-  width: 90%;
-  max-width: 1600px;
+  width: 95%;
+  max-width: 3840px;
   margin: 0 auto;
 `;
 
 const Title = styled.h1`
   color: white;
-  font-size: 3rem;
+  font-size: 4rem;
   text-align: center;
-  margin-bottom: 100px;
+  margin-bottom: 120px;
   font-weight: bold;
   font-family: "LG Smart", sans-serif;
-  padding-top: 30px;
+  padding-top: 40px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
@@ -69,9 +69,9 @@ const RankCircle = styled.div<{ rank: number }>`
 
 const RankImage = styled.div<{ rank: number }>`
   width: ${(props) =>
-    props.rank === 1 ? "200px" : props.rank === 2 ? "180px" : "160px"};
+    props.rank === 1 ? "300px" : props.rank === 2 ? "260px" : "220px"};
   height: ${(props) =>
-    props.rank === 1 ? "200px" : props.rank === 2 ? "180px" : "160px"};
+    props.rank === 1 ? "300px" : props.rank === 2 ? "260px" : "220px"};
   border-radius: 50%;
   border: none;
   background: ${(props) => {
@@ -102,9 +102,9 @@ const RankImage = styled.div<{ rank: number }>`
     content: "";
     position: absolute;
     width: ${(props) =>
-      props.rank === 1 ? "250px" : props.rank === 2 ? "230px" : "210px"};
+      props.rank === 1 ? "350px" : props.rank === 2 ? "310px" : "270px"};
     height: ${(props) =>
-      props.rank === 1 ? "250px" : props.rank === 2 ? "230px" : "210px"};
+      props.rank === 1 ? "350px" : props.rank === 2 ? "310px" : "270px"};
     background: url("/wreath.png") no-repeat center center;
     background-size: contain;
     z-index: -1;
@@ -119,7 +119,7 @@ interface VoteCountProps {
 
 const VoteCount = styled.div<VoteCountProps>`
   font-size: ${(props) =>
-    props.rank === 1 ? "24px" : props.rank === 2 ? "22px" : "20px"};
+    props.rank === 1 ? "32px" : props.rank === 2 ? "28px" : "24px"};
   font-weight: bold;
 `;
 
@@ -127,7 +127,7 @@ const VotePercentage = styled.div<VoteCountProps>`
   color: #1c1c1c;
   font-weight: bold;
   font-size: ${(props) =>
-    props.rank === 1 ? "24px" : props.rank === 2 ? "22px" : "20px"};
+    props.rank === 1 ? "32px" : props.rank === 2 ? "28px" : "24px"};
 `;
 
 const Crown = styled.div`
@@ -139,49 +139,31 @@ const Crown = styled.div`
 `;
 
 const RankInfo = styled.div<{ rank: number }>`
-  margin-top: 10px;
+  margin-top: 20px;
   color: white;
   font-size: ${(props) =>
-    props.rank === 1 ? "18px" : props.rank === 2 ? "16px" : "14px"};
+    props.rank === 1 ? "24px" : props.rank === 2 ? "22px" : "20px"};
 `;
 
 const Score = styled.div<{ rank: number }>`
   color: #9fff9c;
   font-weight: bold;
-  margin-top: 5px;
+  margin-top: 10px;
   font-size: ${(props) =>
-    props.rank === 1 ? "24px" : props.rank === 2 ? "20px" : "18px"};
+    props.rank === 1 ? "32px" : props.rank === 2 ? "28px" : "24px"};
 `;
 
 const ListContainer = styled.div`
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
-  padding: 20px;
+  padding: 30px;
   backdrop-filter: blur(5px);
-  max-height: 500px;
-  overflow-y: auto;
+  width: 80%;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-
-  /* Custom scrollbar */
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(159, 255, 156, 0.3);
-    border-radius: 4px;
-
-    &:hover {
-      background: rgba(159, 255, 156, 0.5);
-    }
-  }
+  gap: 30px;
+  font-size: 18px;
 `;
 
 interface RankItemProps {
@@ -191,8 +173,9 @@ interface RankItemProps {
 const RankItem = styled.div<RankItemProps>`
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 18px;
 
   &:last-child {
     border-bottom: ${(props) =>
